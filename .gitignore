@@ -1,0 +1,12 @@
+*.cabal
+*.iml
+*.lock
+*.yaml
+.idea
+.stack-work
+.vscode
+*.o
+*.hi
+Main
+Setup.hs
+out
