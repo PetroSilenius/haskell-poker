@@ -4,7 +4,7 @@ import Data.List ( sortBy )
 import Data.Ord ( comparing )
 import System.Random
 
-data Rank = Ace | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King deriving (Eq, Ord, Enum)
+data Rank = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace deriving (Eq, Ord, Enum)
 
 instance Show Rank where
     show Two = "2"
@@ -30,7 +30,7 @@ instance Show Card where
 
 -- Construct card deck with nested loops of suits and ranks. --
 getAllCards :: [Card]
-getAllCards = [Card rank suit | suit <- [Hearts, Diamonds, Clubs, Spades], rank <- [Ace .. King]]
+getAllCards = [Card rank suit | suit <- [Hearts, Diamonds, Clubs, Spades], rank <- [Two .. Ace]]
 
 -- Get shuffled deck with a random number. --
 shuffleCards :: IO [Card]

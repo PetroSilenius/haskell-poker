@@ -2,7 +2,6 @@ module Hands where
 
 import Cards
 import Data.List (groupBy, sortOn)
-import Data.Ord (comparing)
 
 getGroups hand =
   let equalRank x y = rank x == rank y
@@ -48,11 +47,11 @@ getHandValue hand =
   in case length longest of
       4 -> (8, head longest)
       3 -> case length secondLongest of
-          2 -> (7, head secondLongest)
-          _ -> (4, head secondLongest)
+          2 -> (7, head longest)
+          _ -> (4, head longest)
       2 -> case length secondLongest of
-          2 -> (3, head secondLongest)
-          _ -> (2, head secondLongest)
+          2 -> (3, head longest)
+          _ -> (2, head longest)
       _ ->
           if isFlush hand && isStraight hand
             then (9, getHighestCard hand)
@@ -64,15 +63,15 @@ getHandValue hand =
 getHandText :: [Card] -> String
 getHandText hand =
   case getHandValue hand of
-    (9, _) -> "Straight flush"
-    (8, _) -> "Four of a kind"
-    (7, _) -> "Full house"
-    (6, _) -> "Flush"
-    (5, _) -> "Straight"
-    (4, _) -> "Three of a kind"
-    (3, _) -> "Two of a kind"
-    (2, _) -> "Pair"
-    (1, _) -> "High card"
+    (9, highCard) -> "Straight flush"
+    (8, highCard) -> "Four of a kind"
+    (7, highCard) -> "Full house"
+    (6, highCard) -> show (getRank highCard) ++ " high flush"
+    (5, highCard) -> show (getRank highCard) ++ " high straigh"
+    (4, highCard) -> "Three of a kind" ++ show (getRank highCard)
+    (3, highCard) -> "Two of a kind"
+    (2, highCard) -> "Pair of " ++ show (getRank highCard) ++ "s"
+    (1, highCard) -> show (getRank highCard) ++ " high"
 
 -- FIXME: This needs to return whether player wins or not.
 -- playerWins :: [Card] -> [Card] -> Bool
