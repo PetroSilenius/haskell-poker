@@ -16,6 +16,7 @@ gameIntro = do
         putStrLn "Select the card you want to discard by entering number from 1-5 and pressing enter"
         putStrLn "When you're ready just press enter"
         putStrLn "Good luck!"
+        putStrLn ""
 
 playGame :: [Card] -> IO ()
 playGame gameDeck = do
@@ -28,13 +29,28 @@ playGame gameDeck = do
                    return newDeck
               else return gameDeck
 
+    (aiHand, deck) <- dealCards 5 deck
+    let aiInitialHand = aiHand
+    aiHand <- aiDiscardCard aiHand aiHand
+    (aiNewCards, deck) <- dealCards (5 - length aiHand) deck
+    let aiNewHand = aiHand ++ aiNewCards
+
     (hand, deck) <- dealCards 5 deck
     hand <- discardCard hand hand
     (newCards, deck) <- dealCards (5 - length hand) deck
-    putStrLn $ "You draw " ++ (show newCards)
     let newHand = hand ++ newCards
+
+    putStrLn ""
+    putStrLn $ "You draw " ++ (show newCards)
     putStrLn $ "Your hand is " ++ (show $ newHand)
     putStrLn $ "You have: " ++ (show $ bestHand newHand)
+    putStrLn ""
+
+    putStrLn $ "AI's initial hand was " ++ (show $ aiInitialHand)
+    putStrLn $ "AI's hand at the end was " ++ (show $ aiNewHand)
+    putStrLn $ "Ai has: " ++ (show $ bestHand aiNewHand)
+    putStrLn ""
+
     putStr "Play again y/n? "
     char <- getLine
     if char == "y" then playGame deck else return ()
@@ -49,3 +65,10 @@ discardCard originalHand hand = do
             cardToBeDiscarded   = originalHand !! (discardAt - 1)
             newHand             = filter (\card -> card /= cardToBeDiscarded) hand in
         discardCard originalHand newHand
+
+aiDiscardCard :: [Card] -> [Card] -> IO [Card]
+aiDiscardCard originalHand hand = do
+    let discardAt           = 3
+        cardToBeDiscarded   = originalHand !! (discardAt - 1)
+        newHand             = filter (\card -> card /= cardToBeDiscarded) hand
+    return newHand
