@@ -57,6 +57,8 @@ playGame gameDeck = do
     let parsedResults = splitOn "," results
     let wins = read $ head parsedResults :: Integer
     let losses = read $ parsedResults !! 1 :: Integer
+    -- playerWins $ newHand aiNewHand
+    -- TODO: Increment wins/losses based on `playerWins` result.
     putStrLn $ ("Wins: " ++ show wins ++ ", Losses: " ++ show losses)
     writeFile resultsFile (show wins ++ "," ++ show losses)
     putStr "Play again y/n? "

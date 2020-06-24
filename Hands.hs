@@ -46,6 +46,16 @@ getHandValue hand =
                 then (6, getHighestCard hand)
                 else (if isStraight hand then 5 else 1, getHighestCard hand)
 
+
+-- FIXME: This needs to return whether player wins or not.
+-- playerWins :: [Card] -> [Card] -> Bool
+-- playerWins playerHand aiHand = do
+--     let playerRank = fst $ getHandValue playerHand
+--     let aiRank = fst $ getHandValue aiHand
+--     putStrLn playerRank
+--     putStrLn aiRank
+--     return True
+
 bestHand :: [Card] -> String
 bestHand hand =
   case getHandValue hand of
