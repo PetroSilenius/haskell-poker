@@ -14,6 +14,23 @@ getSuit (Card r s) = s
 getRank :: Card -> Rank
 getRank (Card r s) = r
 
+getIntRank :: Card -> Int
+getIntRank (Card r s) =
+    case r of
+        Two -> 2
+        Three -> 3
+        Four -> 4
+        Five -> 5
+        Six -> 6
+        Seven -> 7
+        Eight -> 8
+        Nine -> 9
+        Ten -> 10
+        Jack -> 11
+        Queen -> 12
+        King -> 13
+        Ace -> 14
+
 allEq :: [Card] -> Maybe Card -> Bool
 allEq (h:t) Nothing = allEq t (Just h)
 allEq (h:t) (Just e) = (getSuit h == getSuit e) && allEq t (Just e)
@@ -53,12 +70,11 @@ getHandValue hand =
           2 -> (3, head longest)
           _ -> (2, head longest)
       _ ->
-          if isFlush hand && isStraight hand
-            then (9, getHighestCard hand)
-            else
-              if isFlush hand
-                then (6, getHighestCard hand)
-                else (if isStraight hand then 5 else 1, getHighestCard hand)
+          if isFlush hand && isStraight hand then
+              (9, getHighestCard hand)
+          else if isFlush hand then
+              (6, getHighestCard hand)
+          else (if isStraight hand then 5 else 1, getHighestCard hand)
 
 getHandText :: [Card] -> String
 getHandText hand =
@@ -68,16 +84,18 @@ getHandText hand =
     (7, highCard) -> "Full house"
     (6, highCard) -> show (getRank highCard) ++ " high flush"
     (5, highCard) -> show (getRank highCard) ++ " high straigh"
-    (4, highCard) -> "Three of a kind" ++ show (getRank highCard)
+    (4, highCard) -> "Three of a kind"
     (3, highCard) -> "Two of a kind"
     (2, highCard) -> "Pair of " ++ show (getRank highCard) ++ "s"
     (1, highCard) -> show (getRank highCard) ++ " high"
 
--- FIXME: This needs to return whether player wins or not.
--- playerWins :: [Card] -> [Card] -> Bool
--- playerWins playerHand aiHand = do
---     let playerRank = fst $ getHandValue playerHand
---     let aiRank = fst $ getHandValue aiHand
---     putStrLn playerRank
---     putStrLn aiRank
---     return True
+playerWins :: [Card] -> [Card] -> Maybe Bool
+playerWins playerHand aiHand = do
+    let playerRank = getHandValue playerHand
+    let aiRank = getHandValue aiHand
+    let playerValue = 100 * fst playerRank + getIntRank (snd playerRank)
+    let aiValue = 100 * fst aiRank + getIntRank (snd aiRank)
+    if playerValue > aiValue then
+        Just True
+    else
+        if playerValue < aiValue then Just False else Nothing

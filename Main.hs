@@ -52,13 +52,21 @@ playGame gameDeck = do
     putStrLn $ "Ai has: " ++ (show $ getHandText aiNewHand)
     putStrLn ""
 
+    -- TODO: gitignore results and make a new file if it doesn't exists.
+    
     let resultsFile = "results.txt"
     results <- readFile resultsFile
     let parsedResults = splitOn "," results
     let wins = read $ head parsedResults :: Integer
     let losses = read $ parsedResults !! 1 :: Integer
-    -- playerWins $ newHand aiNewHand
-    -- TODO: Increment wins/losses based on `playerWins` result.
+    let text = case playerWins newHand aiNewHand of
+            Just (True) -> "Player wins"
+            Just (False) -> "AI wins"
+            _ -> "It's a draw"
+            
+    -- TODO: increment `wins` or `losses` based on result
+
+    putStrLn text
     putStrLn $ ("Wins: " ++ show wins ++ ", Losses: " ++ show losses)
     writeFile resultsFile (show wins ++ "," ++ show losses)
     putStr "Play again y/n? "
