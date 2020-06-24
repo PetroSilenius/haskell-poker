@@ -44,12 +44,12 @@ playGame gameDeck = do
     putStrLn ""
     putStrLn $ "You draw " ++ (show newCards)
     putStrLn $ "Your hand is " ++ (show $ newHand)
-    putStrLn $ "You have: " ++ (show $ bestHand newHand)
+    putStrLn $ "You have: " ++ (show $ getHandText newHand)
     putStrLn ""
 
     putStrLn $ "AI's initial hand was " ++ (show $ aiInitialHand)
     putStrLn $ "AI's hand at the end was " ++ (show $ aiNewHand)
-    putStrLn $ "Ai has: " ++ (show $ bestHand aiNewHand)
+    putStrLn $ "Ai has: " ++ (show $ getHandText aiNewHand)
     putStrLn ""
 
     let resultsFile = "results.txt"
