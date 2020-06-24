@@ -76,7 +76,8 @@ discardCard originalHand hand = do
 
 aiDiscardCard :: [Card] -> [Card] -> IO [Card]
 aiDiscardCard originalHand hand = do
-    let discardAt           = 3
-        cardToBeDiscarded   = originalHand !! (discardAt - 1)
-        newHand             = filter (\card -> card /= cardToBeDiscarded) hand
-    return newHand
+    discardAt <- randomRIO (1,5)
+    if length hand < 4 then return hand else
+        let cardToBeDiscarded   = originalHand !! (discardAt - 1)
+            newHand             = filter (\card -> card /= cardToBeDiscarded) hand in
+        aiDiscardCard originalHand newHand
