@@ -1,5 +1,6 @@
 import System.IO
 import System.Random
+import Data.List.Split
 
 import Cards
 import Hands
@@ -51,6 +52,13 @@ playGame gameDeck = do
     putStrLn $ "Ai has: " ++ (show $ bestHand aiNewHand)
     putStrLn ""
 
+    let resultsFile = "results.txt"
+    results <- readFile resultsFile
+    let parsedResults = splitOn "," results
+    let wins = read $ head parsedResults :: Integer
+    let losses = read $ parsedResults !! 1 :: Integer
+    putStrLn $ ("Wins: " ++ show wins ++ ", Losses: " ++ show losses)
+    writeFile resultsFile (show wins ++ "," ++ show losses)
     putStr "Play again y/n? "
     char <- getLine
     if char == "y" then playGame deck else return ()
