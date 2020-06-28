@@ -21,7 +21,14 @@ instance Show Rank where
     show King = "K"
     show Ace = "A"
 
-data Suit = Hearts | Diamonds | Clubs | Spades deriving (Show, Eq)
+data Suit = Hearts | Diamonds | Clubs | Spades deriving (Eq)
+
+instance Show Suit where
+    show Hearts = "\x2661"
+    show Diamonds = "\x2662"
+    show Clubs = "\x2663"
+    show Spades = "\x2660"
+
 data Card = Card { rank :: Rank, suit :: Suit } | BlankCard deriving (Eq)
 
 instance Show Card where
