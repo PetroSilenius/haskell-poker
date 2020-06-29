@@ -1,5 +1,6 @@
 import System.IO
 import System.Random
+import System.Directory
 import Data.List.Split
 
 import Cards
@@ -52,9 +53,11 @@ playGame gameDeck = do
     putStrLn $ "Ai has: " ++ (show $ getHandText aiNewHand)
     putStrLn ""
 
-    -- TODO: gitignore results and make a new file if it doesn't exists.
-    
     let resultsFile = "results.txt"
+    fileExists <- doesFileExist resultsFile
+    if not fileExists
+    then writeFile resultsFile "0,0"
+    else return ()
     results <- readFile resultsFile
     let parsedResults = splitOn "," results
     let wins = read $ head parsedResults :: Integer
@@ -63,7 +66,7 @@ playGame gameDeck = do
             Just (True) -> "Player wins"
             Just (False) -> "AI wins"
             _ -> "It's a draw"
-            
+
     -- TODO: increment `wins` or `losses` based on result
 
     putStrLn text
