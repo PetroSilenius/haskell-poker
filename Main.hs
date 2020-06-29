@@ -62,12 +62,15 @@ playGame gameDeck = do
     let parsedResults = splitOn "," results
     let wins = read $ head parsedResults :: Integer
     let losses = read $ parsedResults !! 1 :: Integer
+    let playerWinsText = "Player wins"
+    let aiWinsText = "AI wins"
     let text = case playerWins newHand aiNewHand of
-            Just (True) -> "Player wins"
-            Just (False) -> "AI wins"
+            Just (True) -> playerWinsText
+            Just (False) -> aiWinsText
             _ -> "It's a draw"
 
-    -- TODO: increment `wins` or `losses` based on result
+    wins <- if text == playerWinsText then return $ wins + 1 else return wins
+    losses <- if text == aiWinsText then return $ losses + 1 else return losses
 
     putStrLn text
     putStrLn $ ("Wins: " ++ show wins ++ ", Losses: " ++ show losses)
